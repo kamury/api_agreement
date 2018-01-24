@@ -1,0 +1,1983 @@
+§FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# monocle
+
+API для получения радиолокационных данных. Все комментарии на русском, в соответствии со спецификацией. В именах сущностей часть названий, для которых удалось подобрать соотвествующий англоязычный аналог, передена на английский, часть оставлена в виде аббревиатур, соответсвующих русскоязычным аббревиатурам.
+
+## Станции [/radar/list{?ids}{?title}{?limit}{?offset}]
+
+### Получить список станций [GET]
+
++ Parameters
+    * ids - Фильтр по id
+    + title - Фильтр по названию
+    + limit - Количество строк на странице
+    + offset - Начиная с какой позиции выводить элементы
+
++ Response 200 (application/json)
+
+        {
+            "count": 5,
+            "items": [
+                {
+                    "id": 1,
+                    "index": "0001",
+                    "title": "Орловка",
+                    "latitude": 55.807775,
+                    "longitude": 37.566814,
+                    "MASL": 0,
+                    "HAAT_radar": 0,
+                    "HAAT_AMS_DAD": 0,
+                    "terrain_type": "land",
+                    "current_program": {
+                        "id": 1,
+                        "title": "Обзор 50 км УМ 0-90°"
+                    },
+                    "schedule_started": true,
+                    "alarm_id": 0,
+                    "record_local_reflection_map_duration": null,
+                    "equipment_status": true,
+                    "exchange_status": true,
+                    "rotation_status": 60
+                },
+                {
+                    "id": 2,
+                    "index": "0002",
+                    "title": "Чкаловский",
+                    "latitude": 55.807775,
+                    "longitude": 37.566814,
+                    "MASL": 0,
+                    "HAAT_radar": 0,
+                    "HAAT_AMS_DAD": 0,
+                    "terrain_type": "coldsea",
+                    "current_program": {
+                        "id": 1,
+                        "title": "Обзор 50 км УМ 0-90°"
+                    },
+                    "schedule_started": true,
+                    "alarm_id": 0,
+                    "record_local_reflection_map_duration": "PT0H12M0S",
+                    "equipment_status": true,
+                    "exchange_status": true,
+                    "rotation_status": 60
+                },
+                {
+                    "id": 3,
+                    "index": "0003",
+                    "title": "Елец",
+                    "latitude": 55.807775,
+                    "longitude": 37.566814,
+                    "MASL": 0,
+                    "HAAT_radar": 0,
+                    "HAAT_AMS_DAD": 0,
+                    "terrain_type": "warmsea",
+                    "current_program": {
+                        "id": 1,
+                        "title": "Готовность"
+                    },
+                    "schedule_started": false,
+                    "alarm_id": 0,
+                    "record_local_reflection_map_duration": null,
+                    "equipment_status": true,
+                    "exchange_status": true,
+                    "rotation_status": 60
+                },
+                {
+                    "id": 4,
+                    "index": "0004",
+                    "title": "Тула",
+                    "latitude": 55.807775,
+                    "longitude": 37.566814,
+                    "MASL": 0,
+                    "HAAT_radar": 1,
+                    "HAAT_AMS_DAD": 0,
+                    "terrain_type": "warmsea",
+                    "current_program": {
+                        "id": 1,
+                        "title": "Готовность"
+                    },
+                    "schedule_started": false,
+                    "alarm_id": 0,
+                    "record_local_reflection_map_duration": null,
+                    "equipment_status": true,
+                    "exchange_status": true,
+                    "rotation_status": 60
+                },
+                {
+                    "id": 5,
+                    "index": "0005",
+                    "title": "Щелково",
+                    "latitude": 55.807775,
+                    "longitude": 37.566814,
+                    "MASL": 0,
+                    "HAAT_radar": 1,
+                    "HAAT_AMS_DAD": 0,
+                    "terrain_type": "land",
+                    "current_program": {
+                        "id": 1,
+                        "title": "Готовность"
+                    },
+                    "schedule_started": false,
+                    "alarm_id": 0,
+                    "record_local_reflection_map_duration": null,
+                    "equipment_status": true,
+                    "exchange_status": true,
+                    "rotation_status": 60
+                }
+            ]
+        }
+
+## Станция [/radar/{id}]
+
++ Parameters
+    + id (number) - ID станции
+
+### Получить станцию [GET]
+
++ Response 200 (application/json)
+
+            {
+                "id": 3,
+                "index": "0003",
+                "title": "Елец",
+                "latitude": 55.807775,
+                "longitude": 37.566814,
+                "MASL": 0,
+                "HAAT_radar": 0,
+                "HAAT_AMS_DAD": 0,
+                "terrain_type": "",
+                "current_program": {
+                    "id": 1,
+                    "title": "Готовность"
+                },
+                "schedule_status": "started",
+                "alarm_id": 0,
+                "record_local_reflection_map_duration": null,
+                "equipment_status": true,
+                "exchange_status": true,
+                "rotation_status": 60
+            }
+            
++ Response 404
+
+### Обновить станцию [PUT]
+
++ Request (application/json)
+
+        {
+            "id": 3,
+            "index": "0003",
+            "title": "Елец",
+            "latitude": 55.807775,
+            "longitude": 37.566814,
+            "MASL": 0,
+            "HAAT_radar": 0,
+            "HAAT_AMS_DAD": 0,
+            "terrain_type": "land",
+            "alarm_id": 0
+        }
+
++ Response 422 (application/json)
+
+    + Body
+    
+            {
+                "index": "Невалидное значение",
+                "index_not_unique": "Индекс не уникален",
+                "title": "Невалидное значение",
+                "terrainType": "Невалидное значение",
+                "latitude": "Невалидное значение",
+                "longitude": "Невалидное значение",
+                "MASL": "Невалидное значение",
+                "HAATRadar": "Невалидное значение",
+                "HAATAMSDAD": "Невалидное значение",
+                "alarmId": "Невалидное значение"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "id": 3
+                "index": "0003",
+                "title": "Елец",
+                "latitude": 55.807775,
+                "longitude": 37.566814,
+                "MASL": 0,
+                "HAAT_radar": 0,
+                "HAAT_AMS_DAD": 0,
+                "terrain_type": "land",
+                "alarm_id": 0,
+                "record_local_reflection_map_duration": null,
+                "equipment_status": true,
+                "exchange_status": true,
+                "rotation_status": 60
+            }
+        
++ Response 404
+
+## Список РЛП станции [/radar/{id}/settings/rlp_list]
+
++ Parameters
+    + id (number) - ID станции
+
+### Список РЛП станции [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 4,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "title": "Метеорологические явления",
+                        "enable_altitude_scale": false,
+                        "mixed_with_other_rlp": false
+                    },
+                    {
+                        "id": 2,
+                        "title": "Верхняя граница облачности",
+                        "enable_altitude_scale": true,
+                        "mixed_with_other_rlp": false
+                    },
+                    {
+                        "id": 3,
+                        "title": "Нижняя граница радиоэха",
+                        "enable_altitude_scale": false,
+                        "mixed_with_other_rlp": false
+                    },
+                    {
+                        "id": 4,
+                        "title": "Векторное поле скоростей",
+                        "enable_altitude_scale": false,
+                        "mixed_with_other_rlp": true
+                    }
+                ]
+        }
+
+## Список КС станции [/radar/{id}/settings/сs_list]
+
++ Parameters
+    + id (number) - ID станции
+
+### Список КС станции [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "title": "Отражаемость",
+                    },
+                    {
+                        "id": 2,
+                        "title": "Интенсивность осадков",
+                    }
+                ]
+        }
+
+
+## Минимально опасное метеоявление станции [/radar/{id}/settings/min_dangerous_meteo_list]
+
++ Parameters
+    + id (number) - ID станции
+
+### Получить [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": 2,
+            "title": "Слоистая облачность"
+        }
+
+## Список метеоявлений станции [/radar/{id}/settings/meteo_list]
+
++ Parameters
+    + id (number) - ID станции
+
+### Список метеоявлений станции [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 5,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "title": "Облачность (слоистообразная облачность)",
+                        "items":
+                        [
+                            {
+                                "id": 1,
+                                "code": "Cl_dBZ23_min"
+                                "title": "Минимальное значение радиолокационной отражаемости на уровнях Z 2 и Z 3",
+                                "measurement unit": "dBZ",
+                                "period": "all"
+                            }
+                        ],
+                    },
+                    {
+                        "id": 2,
+                        "title": "Град (слабый, умеренный, сильный)",
+                        "items":
+                        [
+                            {
+                                "id": 2,
+                                "code": "Hl_Delta_H3_Ht0"
+                                "title": "Пороговое значение разности высот H3 и H0",
+                                "measurement unit": "м",
+                                "period": "warm"
+                            },
+                            {
+                                "id": 3,
+                                "code": "Hl_dBZ_max"
+                                "title": "Максимальное значение радиолокационной отражаемости по всему объему облака",
+                                "measurement unit": "dBZ",
+                                "period": "warm"
+                            }
+                        ],
+                    }
+                ]
+        }
+                
+## Настройки станции [/radar/{id}/settings]
+
++ Parameters
+    + id (number) - ID станции
+
+### Получить настройки станции [GET]
+
++ Response 200 (application/json)
+
+            {
+                "id": 3,
+                "title": "Елец", 
+                "antenna": {
+                    "channel": {
+                        "id": 2
+                    },
+                    "azimuth": 60,
+                    "tilt": 16
+                },
+                "calibration": {
+                    "azimuth_north_fix": 0,
+                    "cloud_velocity": "by_radial_velocity",
+                    "manual_param": "isotherm_height",
+                    "get_auto_param": true,
+                    "temperature": 1.3,
+                    "period": "warm",
+                    "isotherm0_height": 200,
+                    "isotherm22_height": 3,
+                    "tropopause_height": 12000
+                },
+                "meteo_criterion": {
+                    "min_dangerous_meteo": {
+                        "id": 1
+                    },
+                    "isotherm_expire_period": 12,
+                    "meteo_options": [
+                        {
+                            "id": 1,
+                            "type": "Облачность (слоистообразная облачность)",
+                            "warm": 10,
+                            "cold": -10,
+                            "code": "Cl_dBZ23_min",
+                            "title": "Минимальное значение радиолокационной отражаемости на уровнях Z 2 и Z 3",
+                            "measurement unit": "dBZ"
+                        },
+                        {
+                            "id": 2,
+                            "type": "Град (слабый, умеренный, сильный)",
+                            "warm": 25,
+                            "cold": -30,
+                            "code": "Hl_dBZ_min",
+                            "title": "Пороговое значение разности высот H3 и H0",
+                            "measurement unit": "м"
+                        },
+                        {
+                            "id": 3,
+                            "type": "Град (слабый, умеренный, сильный)",
+                            "warm": 45,
+                            "cold": -20,
+                            "code": "Hl_dBZ_max",
+                            "title": "Максимальное значение радиолокационной отражаемости по всему объему облака",
+                            "measurement unit": "м"
+                        }
+                    ]
+                }
+            }
+            
+### Редактирование настроек [PUT]
+
++ Request (application/json)
+
+        {
+                "id": 3,
+                "antenna": {
+                    "channel_id": 2,
+                    "azimuth": 60,
+                    "tilt": 16
+                },
+                "calibration": {
+                    "azimuth_north_fix": 0,
+                    "cloud_velocity": "by_center_mass",
+                    "manual_param": "ground_temperature",
+                    "get_auto_param": true,
+                    "temperature": 1.3,
+                    "period": "warm",
+                    "isotherm0_height": 200,
+                    "isotherm22_height": 3,
+                    "tropopause_height": 12000
+                },
+                "meteo_criterion": {
+                    "min_dangerous_meteo_id": 1,
+                    "isotherm_expire_period": 12,
+                    "meteo_options": [
+                        {
+                            "id": 1,
+                            "warm": 10,
+                            "cold": -10
+                        },
+                        {
+                            "id": 2,
+                            "warm": 25,
+                            "cold": -30
+                        },
+                        {
+                            "id": 3,
+                            "warm": 45,
+                            "cold": -20
+                        }
+                    ]
+                }
+            }
+
++ Response 422
+
+        {
+            "antenna": {
+                "channel": "Невалидное значение",
+                "azimuth": "Невалидное значение",
+                "tilt": "Невалидное значение"
+            },
+            "calibration": {
+                "azimuth_north_fix": "Невалидное значение",
+                "cloud_velocity": "Невалидное значение",
+                "manual_param": "Невалидное значение",
+                "get_auto_param": "Невалидное значение",
+                "temperature": "Невалидное значение",
+                "period": "Невалидное значение",
+                "isotherm0_height": "Невалидное значение",
+                "isotherm22_height": "Невалидное значение",
+                "tropopause_height": "Невалидное значение"
+            },
+            "meteo_criterion": {
+                "min_dangerous_meteo": "Невалидное значение",
+                "isotherm_expire_period": "Невалидное значение",
+                "meteo_options": {
+                    "common": "Невалидное значение",
+                    "items": [
+                        {
+                            "id": 1,
+                            "warm": "Невалидное значение"
+                        },
+                        {
+                            "id": 2,
+                            "warm": "Невалидное значение",
+                            "cold": "Невалидное значение"
+                        }
+                    ]
+                }
+            }
+        }
+
++ Response 200 (application/json)
+
+            {
+                "id": 3,
+                "title": "Елец",
+                "antenna": {
+                    "channel": {
+                        "id": 2
+                    },
+                    "azimuth": 60,
+                    "tilt": 16
+                },
+                "calibration": {
+                    "azimuth_north_fix": 0,
+                    "cloud_velocity": "by_center_mass",
+                    "manual_param": "isotherm_height",
+                    "get_auto_param": true,
+                    "temperature": 1.3,
+                    "period": "warm",
+                    "isotherm0_height": 200,
+                    "isotherm22_height": 3,
+                    "tropopause_height": 12000
+                },
+                "meteo_criterion": {
+                    "min_dangerous_meteo": {
+                        "id": 1
+                    },
+                    "isotherm_expire_period": 12,
+                    "meteo_options": [
+                        {
+                            "id": 1,
+                            "type": "Облачность (слоистообразная облачность)",
+                            "warm": 10,
+                            "cold": -10,
+                            "code": "Cl_dBZ23_min",
+                            "title": "Минимальное значение радиолокационной отражаемости на уровнях Z 2 и Z 3",
+                            "measurement unit": "dBZ"
+                        },
+                        {
+                            "id": 2,
+                            "type": "Град (слабый, умеренный, сильный)",
+                            "warm": 25,
+                            "cold": -30,
+                            "code": "Hl_dBZ_min",
+                            "title": "Пороговое значение разности высот H3 и H0",
+                            "measurement unit": "м"
+                        },
+                        {
+                            "id": 3,
+                            "type": "Град (слабый, умеренный, сильный)",
+                            "warm": 45,
+                            "cold": -20,
+                            "code": "Hl_dBZ_max",
+                            "title": "Максимальное значение радиолокационной отражаемости по всему объему облака",
+                            "measurement unit": "м"
+                        }
+                    ]
+                }
+            }
+            
++ Response 409
+
++ Response 404
+
+## Расписание станции [/radar/{id}/schedule]
+
++ Parameters
+    + id (number) - ID станции
+
+### Получить расписание станции [GET]
+
++ Response 200 (application/json)
+
+            {
+                "count": 2,
+                "items": 
+                    [
+                        {
+                            "id": 1,
+                            "program": {
+                                "id": 2,
+                                "title": "Обзор 50 км УМ 0-90°",
+                                "duration": "PT0H10M0S"
+                            },
+                            "start": "20050809T183142"
+                        },
+                        {
+                            "id": 2,
+                            "program": {
+                                "id": 3,
+                                "title": "Сектор 50 км 60-30°",
+                                "duration": "PT0H12M0S"
+                            },
+                            "start": "20050809T183142"
+                        }
+                    ]
+            }
++ Response 409
+
+### Обновить расписание станции [PUT]
+
++ Request (application/json)
+
+        [
+            {
+                "id": 1,
+                "program_id": 2,
+                "start": "20050809T183142"
+            },
+            {
+                "id": 2,
+                "program_id": 3,
+                "start": "20050809T183142"
+            }
+        ]
+
++ Response 200 (application/json)
+
+            {
+                "count": 5,
+                "items":
+                    [
+                        {
+                            "id": 1,
+                            "program": {
+                                "id": 2,
+                                "title": "Обзор 50 км УМ 0-90°",
+                                "duration": "PT0H10M0S"
+                            },
+                            "start": "20050809T183142"
+                        },
+                        {
+                            "id": 2,
+                            "program": {
+                                "id": 3,
+                                "title": "Сектор 50 км 60-30°",
+                                "duration": "PT0H12M0S"
+                            },
+                            "start": "20050809T183142"
+                        }
+                    ]
+            }
+
++ Response 422
+
+        [
+            {
+                "index": 0,
+                "start": "Программа полностью не выполняется. Измените время начала или поменяйте программу."
+            },
+            {
+                "index": 1,
+                "program_id": "Указанная программа не найдена."
+            }
+        ]
+
++ Response 409
+
++ Response 404
+
+## Включить расписание [/radar/{id}/schedule/start]
+
++ Parameters
+    + id (number) - ID станции
+
+### Включить расписание [POST]
+
++ Response 200 (application/json)
+
++ Response 409
+
++ Response 404
+
+## Остановить работу по расписанию [/radar/{id}/schedule/stop]
+
++ Parameters
+    + id (number) - ID станции
+
+### Остановить работу по расписанию [POST]
+
++ Response 200 (application/json)
+
++ Response 409
+
++ Response 404
+
+
+## Запись карты местных отражений [/radar/{id}/local_reflection_map/start{?cycle}]
+
++ Parameters
+    + id (number) - ID станции
+    * cycle - количество циклов, в текущей итерации всегда 1
+
+### Запись карты местных отражений [POST]
+
++ Response 200 (application/json)
+
+            {
+                "record_local_reflection_map_duration": "PT0H12M0S"
+            }
+
++ Response 409
+
++ Response 404
+
+## Остановить запись карты местных отражений [/radar/{id}/local_reflection_map/stop]
+
++ Parameters
+    + id (number) - ID станции
+    
+### Остановить запись карты местных отражений [POST]
+
++ Response 200 (application/json)
+
++ Response 409
+
++ Response 404
+
+## Запустить программу [/radar/{id}/program/{program_id}/start]
+
++ Parameters
+    + id (number) - ID станции
+    + program_id (number) - ID программы
+
+### Запустить программу [POST]
+
++ Response 200 (application/json)
+
+            {
+                "id": 2,
+                "title": "Сектор 50 км 60-30°",
+                "duration": "PT0H12M0S",
+                "mode": "sector",
+                "distance": 50,
+                "elevation_change_azimuth": 0,
+                "left_border_azimuth": 0,
+                "right_border_azimuth": 0,
+                "elevation_program": [{
+                  "value": 1
+                }],
+                "blocking_program": [
+                  {
+                    "start": 0,
+                    "end": 0
+                  }
+                ]
+            }
+
++ Response 409
+
++ Response 404
+
+## Остановить программу [/radar/{id}/program/{program_id}/stop]
+
++ Parameters
+    + id (number) - ID станции
+    + program_id (number) - ID программы
+
+### Остановить программу [POST]
+
++ Response 200 (application/json)
+
+            {
+                "id": 2,
+                "title": "Сектор 50 км 60-30°",
+                "duration": "PT0H12M0S",
+                "mode": "sector",
+                "distance": 50,
+                "elevation_change_azimuth": 0,
+                "left_border_azimuth": 0,
+                "right_border_azimuth": 0,
+                "elevation_program": [{
+                  "value": 1
+                }],
+                "blocking_program": [
+                  {
+                    "start": 0,
+                    "end": 0
+                  }
+                ]
+            }
+
++ Response 409
+
++ Response 404
+
+## Остановить все запущенные программы [/radar/{id}/program/stop]
+
++ Parameters
+    + id (number) - ID станции
+
+### Остановить все запущенные программы [POST]
+
++ Response 200 (application/json)
+
++ Response 409
+
++ Response 404
+
+## Проверка работоспособности локатора [/radar/{id}/checking]
+
++ Parameters
+    + id (number) - ID станции
+
+### Проверка работоспособности локатора [POST]
+
++ Response 200 (application/json)
+
++ Response 409
+
++ Response 404
+
+## Данные НАМС [/radar/{id}/nams_data]
+
++ Parameters
+    + id (number) - ID станции
+
+### Получить [GET]
+
++ Response 200 (application/json)
+
+        {
+            "humidity": 72,
+            "pressure": 780,
+            "wind_azimuth": 319,
+            "wind_speed": 3,
+            "temp": 13
+        }
+
+## Данные метеостатистики [/radar/{id}/meteo_stat]
+
++ Parameters
+    + id (number) - ID станции
+
+### Метеостатистика [GET]
+
++ Response 200 (application/json)
+
+        {
+            "altitude_max_mo": 319,
+            "altitude_min_refl": 3,
+            "cs_speed": 1000,
+            "cs_dir": 4000
+            "max_atmospheric_process": "Ливень умеренный",
+            "date": "2017-05-15T08:30:00"
+        }
+
+## РЛП [/radar/{id}/RLP/{type}/{?rlp_id}{?only_dangerous}{?altitude}{?from}{?to}{?cell_size}{?radius}]
+
+### Получить РЛП [GET]
+
++ Parameters
+    + id (number) - ID станции
+    + type (str) - тип данных, для данной итерации всегда png
+    * rlp_id - id радиолокационного продукта
+    * only_dangerous - отображать только ОМЯ
+    * altitude - Высота в метрах
+    * from - Начальный период поиска
+    * to - Конечный период поиска
+    * cell_size - Размер области, которую покрывает 1 пиксель в м., в текущей итерации всегда 1000
+    * radius - Радиус обзора в км., в текущей итерации всегда 100
+
++ Response 200 (application/json)
+
+        {
+            "count": 3,
+                "items":
+                [
+                    {
+                        "date": "2017-05-15T08:30:00",
+                        "type": "png",
+                        "params": {
+                            "bounds": [
+                              [55.49017258796964, 37.00165612917932],
+                              [56.12537741203036, 38.131971870820685]
+                            ]
+                        },
+                        "url": "image url here"
+                    },
+                    {
+                        "date": "2017-05-15T08:30:00",
+                        "type": "png",
+                        "params": {
+                            "bounds": [
+                              [55.49017258796964, 37.00165612917932],
+                              [56.12537741203036, 38.131971870820685]
+                            ]
+                        },
+                        "url": "image url here"
+                    },
+                    {
+                        "date": "2017-05-15T08:30:00",
+                        "type": "png",
+                        "params": {
+                            "bounds": [
+                              [55.49017258796964, 37.00165612917932],
+                              [56.12537741203036, 38.131971870820685]
+                            ]
+                        },
+                        "url": "image url here"
+                    }
+                ]
+        }
+        
+## КС [/radar/{id}/CS{?cs_ids}{?type}{?altitude}{?from}{?to}{?cell_size}{?radius}]
+
+### Получить КС [GET]
+
++ Parameters
+    + id (number) - ID станции
+    * cs_ids - Фильтр по id конических сечений
+    * type -  CAPPI или PPI
+    * altitude - Высота в метрах
+    * from - Начальный период поиска
+    * to - Конечный период поиска
+    * cell_size - Размер области, которую покрывает 1 пиксель в м., в текущей итерации всегда 1000
+    * radius - Радиус обзора в км., в текущей итерации всегда 100
+    
+
++ Response 200 (application/json)
+
+        {
+            "count": 1,
+            "items":
+                [
+                    {
+                        "type": "png",
+                        "params": {
+                            "radius": 100,
+                            "cell_size": 1000,
+                            "image_size": 200
+                        },
+                        "url": "image url here"
+                    }
+                ]
+        }
+
++ Response 404
+
+## Метеоинформация в указанной точке [/radar/{id}/{product_type}/point/{?product_ids}{?coordinates}]
+
+### Получить метеоинформацию в указанной точке [GET]
+
++ Parameters
+    + id (number) - ID станции
+    + product_type - РЛП или КС
+    * product_ids -  Фильтр по id
+    * coordinates - Координаты точки
+    
+
++ Response 200 (application/json)
+
+        {
+            "atmospheric_process": "Ливень слабый",
+            ...
+        }
+            
+## Программы [/program/list{?mode}{?title}{?limit}{?offset}]
+
+### Список программ [GET]
+
++ Parameters
+    * mode - Фильтр режима
+    * title - Фильтр по названию
+    * limit - Количество строк на странице
+    * offset - Начиная с какой позиции выводить элементы
+
++ Response 200 (application/json)
+
+        {
+            "count": 4,
+            "items": [
+                {
+                    "id": 1,
+                    "title": "Обзор 50 км УМ 0-90°",
+                    "duration": "PT1H10M10S",
+                    "mode": "circular",
+                    "distance": 25,
+                    "elevation_change_azimuth": 0,
+                    "left_border_azimuth": 0,
+                    "right_border_azimuth": 0,
+                    "elevation_program": [{
+                      "value": 1
+                    }],
+                    "blocking_program": [
+                      {
+                        "start": 0,
+                        "end": 0
+                      }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "title": "Сектор 50 км 60-30°",
+                    "duration": "PT0H12M0S",
+                    "mode": "sector",
+                    "distance": 50,
+                    "elevation_change_azimuth": 0,
+                    "left_border_azimuth": 0,
+                    "right_border_azimuth": 0,
+                    "elevation_program": [{
+                      "value": 1
+                    }],
+                    "blocking_program": [
+                      {
+                        "start": 0,
+                        "end": 0
+                      }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "title": "Обзор 100 км УМ 0-90°",
+                    "duration": "PT0H15M0S",
+                    "mode": "circular",
+                    "distance": 100,
+                    "elevation_change_azimuth": 0,
+                    "left_border_azimuth": 0,
+                    "right_border_azimuth": 0,
+                    "elevation_program": [{
+                      "value": 1
+                    }],
+                    "blocking_program": [
+                      {
+                        "start": 0,
+                        "end": 0
+                      }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "title": "Сектор 75 км 60-30°",
+                    "duration": "PT0H18M0S",
+                    "mode": "sector",
+                    "distance": 150,
+                    "elevation_change_azimuth": 0,
+                    "left_border_azimuth": 0,
+                    "right_border_azimuth": 0,
+                    "elevation_program": [{
+                      "value": 1
+                    }],
+                    "blocking_program": [
+                      {
+                        "start": 0,
+                        "end": 0
+                      }
+                    ]
+                }
+            ]
+        }
+        
+## Программа [/program/{id}]
+
++ Parameters
+    + id (number) - ID программы
+
+### Получить программу [GET]
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "title": "Обзор 50 км УМ 0-90°",
+                "duration": "PT0H10M0S",
+                "mode": "circular",
+                "distance": 25,
+                "elevation_change_azimuth": 0,
+                "left_border_azimuth": 0,
+                "right_border_azimuth": 0,
+                "elevation_program": [{
+                  "value": 1
+                }],
+                "blocking_program": [
+                  {
+                    "start": 0,
+                    "end": 0
+                  }
+                ]
+            }
+            
++ Response 404
+
+## Удалить программу [DELETE]
+
++ Response 204
+
++ Response 409
+        
+        {
+            "count": 2,
+            "radar_ids": [1,4]
+        }
+    
++ Response 404
+
+### Создать программу [POST /program]
+
++ Request (application/json)
+
+        {
+            "title": "Сектор 75 км 60-30°",
+            "duration": "PT0H18M0S",
+            "mode": "sector",
+            "distance": 150,
+            "elevation_change_azimuth": 0,
+            "left_border_azimuth": 0,
+            "right_border_azimuth": 0,
+            "elevation_program": [{
+              "value": 1
+            }],
+            "blocking_program": [
+              {
+                "start": 0,
+                "end": 0
+              }
+            ]
+        }
+
++ Response 422 (application/json)
+
+    + Body
+
+            {
+                "title": "Невалидное значение",
+                "duration": "Невалидное значение",
+                "mode": "Невалидное значение",
+                "distance": "Невалидное значение",
+                "elevation_change_azimuth": "Невалидное значение",
+                "left_border_azimuth": "Невалидное значение",
+                "right_border_azimuth": "Невалидное значение",
+                "elevation_program": {
+                    "common": "Невалидное значение",
+                    "items": [{
+                        "index": 0,
+                        "value": "Невалидное значение"
+                    }]
+                },
+                "blocking_program": {
+                    "common": "",
+                    "items": [{
+                        "index": 0,
+                        "start": "Невалидное значение",
+                        "end": "Невалидное значение"
+                    }]
+                }
+            }
+            
++ Response 201 (application/json)
+
+    + Body
+    
+            {
+                "id": 4,
+                "title": "Сектор 75 км 60-30°",
+                "duration": "PT0H18M0S",
+                "mode": "sector",
+                "distance": 150,
+                "elevation_change_azimuth": 0,
+                "left_border_azimuth": 0,
+                "right_border_azimuth": 0,
+                "elevation_program": [{
+                  "value": 1
+                }],
+                "blocking_program": [
+                  {
+                    "start": 0,
+                    "end": 0
+                  }
+                ]
+            }
+
+## Обновить программу [/program{?ignore_conflict}]
+
++ Parameters
+    * ignore_conflict - указываем этот параметр при редактировании, когда хотим сохранить измененеия несмотря на то, что программа используется в расписании.
+
+### Обновить программу [PUT]
+
++ Request (application/json)
+
+        {
+            "id": 1,
+            "title": "Обзор 50 км УМ 0-90°",
+            "duration": "PT0H10M0S",
+            "mode": "circular",
+            "distance": 25,
+            "elevation_change_azimuth": 0,
+            "left_border_azimuth": 0,
+            "right_border_azimuth": 0,
+            "elevation_program": [{
+              "value": 1
+            }],
+            "blocking_program": [
+              {
+                "start": 0,
+                "end": 0
+              }
+            ]
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "title": "Обзор 50 км УМ 0-90°",
+                "duration": "PT0H10M0S",
+                "mode": "circular",
+                "distance": 25,
+                "elevation_change_azimuth": 0,
+                "left_border_azimuth": 0,
+                "right_border_azimuth": 0,
+                "elevation_program": [{
+                  "value": 1
+                }],
+                "blocking_program": [
+                  {
+                    "start": 0,
+                    "end": 0
+                  }
+                ]
+            }
+            
++ Response 422 (application/json)
+
+    + Body
+
+            {
+                "title": "Невалидное значение",
+                "duration": "Невалидное значение",
+                "mode": "Невалидное значение",
+                "distance": "Невалидное значение",
+                "elevation_change_azimuth": "Невалидное значение",
+                "left_border_azimuth": "Невалидное значение",
+                "right_border_azimuth": "Невалидное значение",
+                "elevation_program": {
+                    "common": "Невалидное значение",
+                    "items": [{
+                        "index": 0,
+                        "value": "Невалидное значение"
+                    }]
+                },
+                "blocking_program": {
+                    "common": "",
+                    "items": [{
+                        "index": 0,
+                        "start": "Невалидное значение",
+                        "end": "Невалидное значение"
+                    }]
+                }
+            }
+
++ Response 409
+        
+        {
+            "count": 2,
+            "radar_ids": [1,4]
+        }
+        
++ Response 404    
+
+## Журнал событий [/radar_log/list{?type}{?radar}{?from}{?to}{?message}{?limit}{?offset}]
+
+### Получить список событий [GET]
+
++ Parameters
+    * type - Тип события, информация или ошибка (error|info)
+    * radar - Id станции
+    * from - Начальный период поиска
+    * to - Конечный период поиска
+    * message - Сообщение
+    * limit - Количество строк на странице
+    * offset - Начиная с какой позиции выводить элементы
+
++ Response 200 (application/json)
+
+        {
+            "count": 4,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "info",
+                        "radar": {
+                            "id": 6,
+                            "title": "Щелково"
+                        },
+                        "message": "Превышен период обновления параметров калибровки."
+                    },
+                    {
+                        "id": 2,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "error",
+                        "radar": {
+                            "id": 1,
+                            "title": "Орловка"
+                        },
+                        "message": "Ошибка подключения к МРЛС. Проверьте настройки."
+                    },
+                    {
+                        "id": 3,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "info",
+                        "radar": {
+                            "id": 6,
+                            "title": "Щелково"
+                        },
+                        "message": "Карта местных отражений очищена"
+                    },
+                    {
+                        "id": 4,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "info",
+                        "radar": {
+                            "id": 2,
+                            "title": "Чкаловский"
+                        },
+                        "message": "Карта местных отражений очищена"
+                    }
+                ]
+        }
+        
+## Уведомления [/alarm/list]
+
+### Получить список уведомлений [GET]
+
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "error",
+                        "radar": {
+                            "id": 6,
+                            "title": "Щелково"
+                        },
+                        "message": "Ошибка соединения."
+                    },
+                    {
+                        "id": 2,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "info",
+                        "radar": {
+                            "id": 1,
+                            "title": "Орловка"
+                        },
+                        "message": "Слабый сигнал."
+                    }
+                ]
+        }
+        
+## Опасные явления [/dangerous_meteo/list]
+
+### Получить список опасных явлений [GET]
+
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "Шторм",
+                        "radar": {
+                            "id": 6,
+                            "title": "Щелково"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "date": "2017-05-15T08:30:00",
+                        "type": "Сильный ливень",
+                        "radar": {
+                            "id": 1,
+                            "title": "Орловка"
+                        }
+                    }
+                ]
+        }
+
+## Настройки экспорта BUFR [/settings/bufr]
+ 
+### Получить список настроек экспорта bufr [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items": 
+                [
+                    {
+                        "active": true,
+                        "ip": "40.72.241.112",
+                        "port": 21,
+                        "path": "/var/lib/monocle/data/",
+                        "radars": [
+                            {
+                                "id": 1,
+                                "title": "Орловка"
+                            },
+                            {
+                                "id": 2,
+                                "title": "Чкаловский"
+                            },
+                            {
+                                "id": 3,
+                                "title": "Братск"
+                            }
+                        ]
+                    },
+                    {
+                        "active": false,
+                        "ip": "40.72.241.112",
+                        "port": 21,
+                        "path": "/var/lib/monocle/data/",
+                        "radars": [
+                            {
+                                "id": 3,
+                                "title": "Братск"
+                            }
+                        ]
+                    }
+                ]
+        }
+
+## Обновить список настроек экспорта BUFR [PUT]
+
++ Request (application/json)
+
+        [
+            {
+                "active": true,
+                "ip": "40.72.241.112",
+                "port": 21,
+                "path": "/var/lib/monocle/data/",
+                "radars": [
+                    {
+                        "id": 1,
+                        "title": "Орловка"
+                    },
+                    {
+                        "id": 2,
+                        "title": "Чкаловский"
+                    },
+                    {
+                        "id": 3,
+                        "title": "Братск"
+                    }
+                ]
+            },
+            {
+                "active": false,
+                "ip": "40.72.241.112",
+                "port": 21,
+                "path": "/var/lib/monocle/data/",
+                "radars": [
+                    {
+                        "id": 3,
+                        "title": "Братск"
+                    }
+                ]
+            }
+        ]
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items": 
+                [
+                    {
+                        "active": true,
+                        "ip": "40.72.241.112",
+                        "port": 21,
+                        "path": "/var/lib/monocle/data/",
+                        "radars": [
+                            {
+                                "id": 1,
+                                "title": "Орловка"
+                            },
+                            {
+                                "id": 2,
+                                "title": "Чкаловский"
+                            },
+                            {
+                                "id": 3,
+                                "title": "Братск"
+                            }
+                        ]
+                    },
+                    {
+                        "active": false,
+                        "ip": "40.72.241.112",
+                        "port": 21,
+                        "path": "/var/lib/monocle/data/",
+                        "radars": [
+                            {
+                                "id": 3,
+                                "title": "Братск"
+                            }
+                        ]
+                    }
+                ]
+        }
+    
++ Response 422 (application/json)
+
+    + Body
+            
+            {
+                "count": 1,
+                "items": 
+                    [
+                        {
+                            "index": 1,
+                            "active": "Невалидное значение",
+                            "ip": "Невалидное значение",
+                            "port": "Невалидное значение",
+                            "path": "Невалидное значение",
+                            "radars": "Невалидное значение"
+                        }
+                    ]
+            }
+            
+## Построение карт [/settings/maps]
+ 
+### Получить настройки для построения карт [GET]
+
++ Response 200 (application/json)
+
+        {
+            "vector_velocity_field": {
+                "circular_horizontal_pitch": 100,
+                "circular_vertical_pitch": 100,
+                "sector_horizontal_pitch": 100,
+                "sector_vertical_pitch": 100
+            },
+            "wind_shear_field": {
+                "circular_max_height": 100,
+                "circular_max_distance": 100,
+                "sector_max_height": 100,
+                "sector_max_distance": 100,
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "atmospheric_process": {
+                "cell_size": 150,
+                "line_generalization": 3,
+                "line_expansion": 3
+            },
+            "vector": {
+                "size": 5,
+                "thickness": 3
+            },
+            "vertical_section": {
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "accumulated_precipitation": {
+                "cell_size": 100
+            },
+            "vertically_integrated_liquid": {
+                "cell_size": 100
+            }
+        }
+
+### Обновить настройки для построения карт [PUT]
+
++ Request (application/json)
+
+        {
+            "vector_velocity_field": {
+                "circular_horizontal_pitch": 100,
+                "circular_vertical_pitch": 100,
+                "sector_horizontal_pitch": 100,
+                "sector_vertical_pitch": 100
+            },
+            "wind_shear_field": {
+                "circular_max_height": 100,
+                "circular_max_distance": 100,
+                "sector_max_height": 100,
+                "sector_max_distance": 100,
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "atmospheric_process": {
+                "cell_size": 150,
+                "line_generalization": 3,
+                "line_expansion": 3,
+            },
+            "vector": {
+                "size": 5,
+                "thickness": 3
+            },
+            "vertical_section": {
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "accumulated_precipitation": {
+                "cell_size": 100
+            },
+            "vertically_integrated_liquid": {
+                "cell_size": 100
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "vector_velocity_field": {
+                "circular_horizontal_pitch": 100,
+                "circular_vertical_pitch": 100,
+                "sector_horizontal_pitch": 100,
+                "sector_vertical_pitch": 100
+            },
+            "wind_shear_field": {
+                "circular_max_height": 100,
+                "circular_max_distance": 100,
+                "sector_max_height": 100,
+                "sector_max_distance": 100,
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "atmospheric_process": {
+                "cell_size": 150,
+                "line_generalization": 3,
+                "line_expansion": 3,
+            },
+            "vector": {
+                "size": 5,
+                "thickness": 3
+            },
+            "vertical_section": {
+                "horizontal_pitch": 100,
+                "vertical_pitch": 100
+            },
+            "accumulated_precipitation": {
+                "cell_size": 100
+            },
+            "vertically_integrated_liquid": {
+                "cell_size": 100
+            }
+        }
+
++ Response 422 (application/json)
+
+        {
+            "vector_velocity_field": {
+                "circular_horizontal_pitch": "Невалидное значение",,
+                "circular_vertical_pitch": "Невалидное значение",,
+                "sector_horizontal_pitch": "Невалидное значение",,
+                "sector_vertical_pitch": "Невалидное значение",
+            },
+            "wind_shear_field": {
+                "sector_max_distance": "Невалидное значение"
+            },
+            "vertically_integrated_liquid": {
+                "cell_size": "Невалидное значение"
+            }
+        }
+
+## Список настроек цветовой шкалы [/settings/color_scale/list]
+
+### Получить список настроек цветовой шкалы [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 2,
+            "items":
+                [
+                    {
+                        "id": 1,
+                        "title": "Отражаемость",
+                        "params":
+                            [
+                                {
+                                    "id": 1,
+                                    "value": 30,
+                                    "color": "#010178"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": 35,
+                                    "color": "#fffb00"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": 40,
+                                    "color": "#f500f6"
+                                }
+                            ]
+                    },
+                    {
+                        "id": 2,
+                        "title": "Радиальная скорость",
+                        "params":
+                            [
+                                {
+                                    "id": 1,
+                                    "value": 30,
+                                    "color": "#010178"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": 35,
+                                    "color": "#fffb00"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": 45,
+                                    "color": "#f500f6"
+                                }
+                            ]
+                    }
+                ]        
+        }
+
+## Настройки цветовой шкалы [/settings/color_scale/{id}]
+
++ Parameters
+    + id (number) - ID раздела настроек цветовой шкалы
+
+### Обновить настройки цветовой шкалы [PUT]
+
++ Request (application/json)
+
+        [
+            {
+                "index": 1,
+                "value": 30,
+                "color": "#010178"
+            },
+            {
+                "index": 2,
+                "value": 35,
+                "color": "#fffb00"
+            },
+            {
+                "index": 3,
+                "value": 40,
+                "color": "#f500f6"
+            }
+        ]
+
++ Response 200 (application/json)
+
+        {
+            "count": 5,
+            "items": 
+                [
+                    {
+                        "value": 30,
+                        "color": "#010178"
+                    },
+                    {
+                        "value": 35,
+                        "color": "#fffb00"
+                    },
+                    {
+                        "value": 40,
+                        "color": "#f500f6"
+                    }
+                ]
+        }
+        
++ Response 422 (application/json)
+
+        {
+            "count": 1,
+            "items": 
+                [
+                    {
+                        "id": 1,
+                        "value": "Невалидное значение",
+                        "color": "Невалидное значение"
+                    }
+                ]
+        }
+        
++ Response 404
+
+## Настройки цветовой шкалы по умолчанию [/settings/color_scale/{id}/default]
+
++ Parameters
+    + id (number) - ID раздела настроек цветовой шкалы
+
+### Получить настройки цветовой шкалы по умолчанию [GET]
+
++ Response 200 (application/json)
+
+        {
+            "count": 3,
+            "items":
+                [
+                    {
+                        "id": 1,
+                        "value": 30,
+                        "color": "#010178"
+                    },
+                    {
+                        "id": 2,
+                        "value": 35,
+                        "color": "#fffb00"
+                    },
+                    {
+                        "id": 3,
+                        "value": 40,
+                        "color": "#f500f6"
+                    }
+                ]
+        }
+
+## Шкала классификации типов метеоявлений [/settings/classification_scale/{id}]
+
+Предоставлет АРМ данные для задания шкалы классификации типов метеоявлений для каждого СМРЛП
+
++ Parameters
+    + id (number) - ID радара
+
+### Получить шкалу [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "type": "Облачность (слоистообразная облачность)",
+                "code": "Cl_dBZ23_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровнях Z2 и Z3",
+                "measurement unit": "dBZ"
+                "range": "минус 10, не более",
+                "service_life": "Все"
+            },
+            {
+                "id": 2,
+                "type": "Облачность (кучевая облачность)",
+                "code": "Cl_dBZ2_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровне Z2",
+                "measurement unit": "dBZ"
+                "range": "от 20 до Cl_dBZ23_min",
+                "service_life": "Все"
+            },
+            {
+                "id": 3,
+                "type": "Облачность (кучевая облачность)",
+                "code": "Cl_dBZ3_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровнях Z3",
+                "measurement unit": "dBZ"
+                "range": "от 30 до 35",
+                "service_life": "Все"
+            }
+        ]
+
+### Установить шкалу [PUT]
+
++ Request (application/json)
+
+        [
+            {
+                "id": 1,
+                "type": "Облачность (слоистообразная облачность)",
+                "code": "Cl_dBZ23_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровнях Z2 и Z3",
+                "measurement unit": "dBZ"
+                "range": "минус 10, не более",
+                "service_life": "Все"
+            },
+            {
+                "id": 2,
+                "type": "Облачность (кучевая облачность)",
+                "code": "Cl_dBZ2_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровне Z2",
+                "measurement unit": "dBZ"
+                "range": "от 20 до Cl_dBZ23_min",
+                "service_life": "Все"
+            },
+            {
+                "id": 3,
+                "type": "Облачность (кучевая облачность)",
+                "code": "Cl_dBZ3_min",
+                "title": "Минимальное значение радиолокационной отражаемости на уровнях Z3",
+                "measurement unit": "dBZ"
+                "range": "от 30 до 35",
+                "service_life": "Все"
+            }
+        ]
+        
++ Response 200 (application/json)
+
++ Response 422 (application/json)
+
+        [
+            {
+                "id": 1,
+                "type": "Невалидное значение",
+                "code": "Невалидное значение",
+                "title": "Невалидное значение",
+                "measurement unit": "Невалидное значение"
+                "range": "Невалидное значение",
+                "service_life": "Невалидное значение"
+            }
+        ]
+
+## Входные данные для алгоритма расчёта «нулевого» азимута [/azimuth_calc{?id}]
+
++ Parameters
+    + id (number) - ID радара
+
+### Установить [POST]
+
++ Request (application/json)
+
+        {
+            "distance_north": 200.0,
+            "distance_north_install": 100.0,
+            "distance_install": 300.3
+        }
+
++ Response 200
+
++ Response 422 (application/json)
+
+        {
+            "distance_north": "Невалидное значение",
+            "distance_north_install": "Невалидное значение",
+            "distance_install": "Невалидное значение"
+        }
+
+## Вертикальное сечение [/vertical_section_by_route]
+Предоставление вертикального сечения по маршруту для выбранного метеопродукта на заданном диапазоне  высот.
+
+### Получить [POST]
+
++ Request  (application/json)
+
+        {
+            "radar_id": 1,
+            "date": "2017-05-15T08:30:00",
+            "begin_route_point": {
+                "latitude": 55.807775,
+                "longitude": 37.566814
+            },
+            "end_route_point": {
+                "latitude": 55.807775,
+                "longitude": 37.566814
+            },
+            "max_altitude": 5000.2,
+            "rlp_type": 2
+        }
+
++ Response 200
+
+## Вертикальный профиль [/vertical_profile]
+Предоставление вертикального профиля для выбранного метеопродукта на заданном диапазоне  высот
+
+### Получить [POST]
+
++ Request  (application/json)
+
+        {
+            "radar_id": 1,
+            "date": "2017-05-15T08:30:00",
+            "marker_pos": {
+                "latitude": 55.807775,
+                "longitude": 37.566814
+            },
+            "max_altitude": 5000.2,
+            "rlp_type": 2
+        }
+
++ Response 200
